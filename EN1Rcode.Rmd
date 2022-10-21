@@ -1,0 +1,423 @@
+---
+title: 'Trabalho 1: collect a data set to answer an ecological research question'
+author: "Madalena Rodrigues 55853, Manuel Barral 56943"
+date: "15/10/2022"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+  knitr::opts_chunk$set(echo = TRUE)
+  # options(tinytex.verbose = TRUE)
+```
+
+<style>
+  div {
+      text-align: justify
+    }
+</style>
+
+# Introduction (5/20)
+
+<!--This is a template for your work. Do not delete anything, nor even the instructions, except this one*
+
+*Do not delete subheadings. If you do, the component associated with each subheading might not be considered in your final grade*
+
+*While you can add below anything you would like as Supplementary material, this component will not be graded. You are assessed by the material up to that section, with each component's weight being visible in front of each header*
+
+*Except any kind of Supplementary material, for which there is no limit but it is not graded, as noted above, **we expect to receive no more than 4 pages as a pdf**. including figures, tables and references*-->
+
+|      A frequência cardíaca, ou seja, o número de contrações do coração por minuto, é expressa em BPM (batimentos por minuto), a mesma unidade de medida utilizada na música para classificar a velocidade rítmica de uma canção. 
+|      Diversos estudos demonstram que a música, mais concretamente a terapia musical, pode ser utilizada para melhorar problemas de saúde, nomeadamente a ansiedade$^{1,2}$, desta forma, torna-se pertinente perceber quais os fatores que influenciam a frequência cardíaca em humanos e que efeitos têm nesta aquando de uma audição musical, para que possam ser tidos em consideração em aplicações como a terapia musical. 
+
+## The question (2/20)
+*Briefly state your research question*
+
+|      Neste trabalho foram testadas 7 músicas, de diferentes géneros e o efeito que estas tiveram no número de batimentos por minuto do coração de 10 indivíduos, com o intuito de perceber, **qual o efeito de vários fatores na frequência cardíaca em humanos após uma audição musical**.
+
+## The data (1/20)
+*Provide the file names you handed in*
+
+* the data .xlsx: 55853MadRod56943ManBar.xlsx
+* the metadata .txt 55853MadRod56943ManBarMD.txt
+* this report compiled as a .pdf (preferred): 55853MadRod56943ManBar.pdf
+
+*Describe the variables collected*
+
+* **response (continous or numeric): fbpm**
+* explanatory (binary): sex
+* explanatory (binary): eshut
+* explanatory (binary): smkr
+* explanatory (binary): exrcs
+* explanatory (categorical): mgnre
+* explanatory (continous): ibpm
+* explanatory (continous): fbpm
+* explanatory (continous): sbpm
+* explanatory (continous): age
+* explanatory (continous): wgt
+* explanatory (continous): hgt
+* explanatory (continous): bmi
+
+*describe in the same format any additional variables you might have collected.*
+
+## Background (2/20)
+
+*Provide some background on why you chose this particular question and data set*
+
+|      Sendo a música utilizada como terapia em diversas áreas da saúde, por exemplo na terapia musical $^{1,2}$ e, sendo esta uma alternativa não invasiva, de baixo custo e sem recurso a fármacos, consideramos importante perceber como diversos fatores influenciam a frequência cardíaca (com maior enfase no género musical), através da análise do seu efeito na mesma e, se existe entre estes, uma diferença significativa que favoreça um determinado fator em relação de outro, dada uma situação onde um determinado intervalo de BPM é espectável para a frequência cardíaca de um indivíduo após audição musical.
+|     Foram escolhidos como potenciais fatores influenciadores da frequência cardíaca: em relação à música - o género musical e os BPM, e em relação ao participante: o sexo; a idade; o índice de massa corporal; a prática de exercício físico assim como o hábito de fumar e se e o indivíduo tinha os olhos abertos ou fechados durante a audição das músicas.
+
+
+# Methods (5/20)
+
+*Provide clear details of the sampling procedures, in particular how you chose the sampling units you chose and what have you considered to enforce randomization and avoid possible confounding factors*
+
+**Participantes:**
+
+|     Este estudo foi conduzido em 10 indivíduos saudáveis com idades compreendidas entre os 16 e os 52 anos, selecionados pelos coordenadores. 
+|     Tendo em conta o intervalo temporal para a realização do estudo e a disponibilidade dos participantes, a escolha feita não corresponde a uma amostra representativa de toda a população, dado não foi feita de forma totalmente aleatória. Desta forma, estamos perante um conjunto de dados resultante de uma amostragem por conveniência, o que poderá originar um *“bias”* ou viés, pelo que não se deve considerar os resultados obtidos como válidos para todos os indivíduos. 
+
+**Procedimento:**
+
+|     Os dados foram recolhidos em ambiente residencial, não sendo registada a temperatura ou a humidade, durante o período da tarde (entre as 14h e as 18h), tendo em conta o ritmo circadiano$^{3,4}$, segundo o qual, o período temporal escolhido, inclui a melhor eficiência cardiovascular ao longo de 24 horas de um indivíduo.
+|     Todos os indivíduos estavam em repouso nos 15 minutos antes da recolha, apresentando assim uma frequência cardíaca “normal” no momento inicial da experiência.
+|     Os participantes foram divididos em dois grupos de forma aleatória - foi atribuído um número a cada participante e estes foram sorteados de forma a decidir quem integrava que grupo. No Grupo 1 (n=6), os participantes foram vendados; no Grupo 2 (n=4), os participantes não foram vendados.
+|     Usando headphones e apresentando as músicas $^{Anexo3}$numa ordem aleatória, os participantes foram sujeitos a sete estilos musicais diferentes: Música clássica; Hardstyle; Heavy metal; Jazz; Pop; Reggae e Valsa, representados por músicas com a duração individual de 1 minuto num volume constante para todos os sujeitos, tendo havido entre cada música um intervalo de 3 minutos, em que os participantes permaneceram em silêncio, em repouso e ainda, os pertencentes ao Grupo 1, vendados.
+|     A frequência cardíaca dos participantes foi medida individualmente pelos coordenadores da experiência com recurso a um smarthwatch e a um oxímetro de dedo, antes e depois de cada audição, respeitando os intervalos entre audições.
+
+# Exploratory Data Analysis (5/20)
+
+## Read the data in (1/20)
+
+*read the .xlsx into R*
+
+```{r}
+  library(readxl)
+  dataset <- read_excel("55853MadRod56943ManBar.xlsx")
+```
+
+## Exploratory Data Analysis (4/20)
+
+*Explore the data visually and describe it using plots and summary statistics that you think are relevant, in particular highlighting results that might be relevant for your research question. No modelling or analysis is required/expected, but you can have models or analysis if you want.*
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+  
+  # BIBLIOTECAS UTILIZADAS: ###################
+  library(ggplot2)
+  library(tidyverse)
+  library(reshape2)
+  library(estimatr)
+  library("gridExtra")
+  library(magrittr)
+  library(multipanelfigure)
+```
+
+Inicialmente foi feita uma análise dos dados utilizando a função *summary()*, incluida nos anexos.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+  # DEFINIÇÃO DE VARIÁVEIS ÚTEIS AO LONGO DA ANÁLISE DE DADOS ###################
+  
+  # Lista com os géneros musicais testados
+  allgnre <- unique(dataset$mgnre)
+
+```
+
+**Dados relativos ao género musical**
+
+|     Nas figuras seguintes encontram-se representados os BPM finais (recolhidos após a audição) de cada indivíduo, relativos a cada género musical, assim como a sua média e o BPM da música utilizada para representar o género. Percebe-se que todos os géneros apresentam um BPM médio semelhante, e que em todos os casos, menos no primeiro, este é inferior ao BPM da música.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="50%"}
+
+  # GRÁFICOS BPM PARA CADA GÉNERO MUSICAL ###################
+  
+  # Colocar os gráficos lado a lado e definir uma margen entre eles
+  par(mfrow = c(3, 3),mar=c(4, 3, 1, 3), mgp=c(1.9, 1, 0))
+
+  # Criar os gráficos 
+  for (gnre in allgnre) {
+  
+      gnreInfo <- dataset[dataset$mgnre == gnre,]
+      finalBpm <- c(gnreInfo$fbpm)
+  
+      plotx <- c(0, length(gnreInfo$ID)) 
+      ploty <- c(55,195)
+  
+      # Desenha o gráfico
+      plot(plotx, ploty[0:length(plotx)] ,type="n", xlab=gnre, ylab="BPM")
+  
+      # Coloca os pontos no gráfico
+      points(finalBpm, col="blue")
+      
+      # Adiciona informação ao gráfico:
+      abline(h = mean(finalBpm), col="red") # Média dos BPM finais
+      abline(h = gnreInfo$sbpm, col="green")  # BPM da música
+  }
+  
+  # Criar um plot vazio para colocar a legenda
+  plot.new()
+  legend("center", legend=c("BPM da música", "BPM médio"), col=c("green", "red"), lty=1)
+```
+
+|     No gráfico de bigodes é possível comparar a frequência cardíaca inicial (antes de ouvir a música) com a frequência final (depois de ouvir a música) para cada género musical. Em todos os géneros musicais, a frequência cardíaca final é superior à inicial, sendo o **Hardstyle** e o **Heavy Metal**, os estilos que apresentam um BPM final mais elevado.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="40%"}
+
+  # BOX PLOT BPM INICIAL E FINAL (GÉNERO MUSICAL) ###################
+
+  # Definição dos dados para o box plot
+  initialBpm <- c(dataset$ibpm)
+  finalBpm <- c(dataset$fbpm)
+
+  df1 <- data.frame(initialBpm, finalBpm, allgnre)
+  df2 <- melt(df1, id.vars='allgnre')
+  
+  # Criação do box plot
+  ggplot(df2, aes(x=allgnre, y=value, fill=variable)) +
+      geom_boxplot()+
+      ggtitle("BPM inicial vs BPM final por género musical") +
+      theme(plot.title = element_text(hjust = 0.5))+
+      xlab("Género Musical")+
+      ylab("BPM")+ 
+      scale_fill_manual(values=c("#56B4E9", "#58AD38"))
+
+``` 
+
+**Dados relativos a outros fatores**
+
+|     Tendo em conta o sexo dos participantes verifica-se que as mulheres têm, em comparação com os homens uma **maior frequência cardíaca final**, no entanto a média da frequência inicial é a mesma para ambos os sexos. 
+|     Quanto ao hábito de fumar, os fumadores apresentam uma **frequência cardíaca mais baixa** em comparação com que fuma. Este resultado contraria estudos existentes, que demonstram uma frequência cardíaca mais elevada em fumadores$^{5}$, isto pode dever-se ao facto de que apenas foram avaliados dois.
+|     Em relação ao estado dos olhos dos participantes, vemos que do Grupo 1, apresentaram em média, tanto uma frequência inicial, como uma **frequência final mais baixa** que os do Grupo 2.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="50%"}
+
+  # BOX PLOT BPM INICIAL E FINAL (SEXO) ###################
+
+  # Definição dos dados para o box plot
+  initialBpm <- c(dataset$ibpm)
+  finalBpm <- c(dataset$fbpm)
+  sexList <- c(dataset$sex)
+  
+  df1 <- data.frame(initialBpm, finalBpm, sexList)
+  df2 <- melt(df1, id.vars='sexList')
+  
+  # Criação do box plot
+  plot1 <- ggplot(df2, aes(x=sexList, y=value, fill=variable)) +
+      geom_boxplot()+
+      ggtitle("BPM inicial vs BPM final \n por sexo do participante") +
+      theme(plot.title = element_text(hjust = 0.5, size = 8, face = "bold"))+
+      theme(legend.position="bottom", legend.title=element_blank())+
+      xlab("Sexo")+
+      ylab("BPM")+ 
+      scale_fill_manual(values=c("#56B4E9", "#58AD38"))+
+      annotate("text", x=1, y=59, size=3, label= paste("n part.= ",toString(nrow(dataset[dataset$sex == "f",])/7)))+
+      annotate("text", x=2, y=59, size=3, label= paste("n part.= ",toString(nrow(dataset[dataset$sex == "m",])/7)))
+  
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="50%"}
+
+  # BOX PLOT BPM INICIAL E FINAL (FUMADORES E N FUMADORES) ###################
+
+  # Definição dos dados para o box plot
+  initialBpm <- c(dataset$ibpm)
+  finalBpm <- c(dataset$fbpm)
+  isSmkr <- c(dataset$smkr)
+  
+  df1 <- data.frame(initialBpm, finalBpm, isSmkr)
+  df2 <- melt(df1, id.vars='isSmkr')
+  
+  # Criação do box plot
+  plot2 <- ggplot(df2, aes(x=isSmkr, y=value, fill=variable)) +
+      geom_boxplot()+
+      ggtitle("BPM inicial vs BPM final \n fumadores/não fumadores") +
+      theme(plot.title = element_text(hjust = 0.5, size = 8, face = "bold"))+
+      theme(legend.position="bottom", legend.title=element_blank())+
+      xlab("Fuma?")+
+      ylab("BPM")+ 
+      scale_fill_manual(values=c("#56B4E9", "#58AD38"))+
+      annotate("text", x=1, y=59, size = 3, label= paste("n part.= ",toString(nrow(dataset[dataset$smkr == "no",])/7)))+
+      annotate("text", x=2, y=59, size = 3, label= paste("n part.= ",toString(nrow(dataset[dataset$smkr == "yes",])/7)))
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="50%"}
+
+  # BOX PLOT BPM INICIAL E FINAL (OLHOS ABERTOS E FECHADOS) ###################
+
+  # Definição dos dados para o box plot
+  initialBpm <- c(dataset$ibpm)
+  finalBpm <- c(dataset$fbpm)
+  eyesShut <- c(dataset$eshut)
+  
+  df1 <- data.frame(initialBpm, finalBpm, eyesShut)
+  df2 <- melt(df1, id.vars='eyesShut')
+  
+  # Criação do box plot
+  plot3 <- ggplot(df2, aes(x=eyesShut, y=value, fill=variable)) +
+      geom_boxplot()+
+      ggtitle("BPM inicial vs BPM final \n olhos abertos/fechados") +
+      theme(plot.title = element_text(hjust = 0.5, size = 8, face = "bold"))+
+      theme(legend.position="bottom", legend.title=element_blank())+
+      xlab("Olhos fechados?")+
+      ylab("BPM")+ 
+      scale_fill_manual(values=c("#56B4E9", "#58AD38"))+
+      annotate("text", x=1, y=59, size = 3, label= paste("n part.= ",toString(nrow(dataset[dataset$eshut == "no",])/7)))+
+      annotate("text", x=2, y=59, size = 3, label= paste("n part.= ",toString(nrow(dataset[dataset$eshut == "yes",])/7)))
+```
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="60%"}
+
+  # FIGURA AUXILIAR PARA COLOCAR OS GRÁFICOS LADO A LADO
+  
+  theme_set(theme_bw())
+  
+  figure1 <- multi_panel_figure(columns = 3, rows = 1, panel_label_type = "none", width = 165, height=85)
+  
+  figure1 %<>%
+    fill_panel(plot1, column = 1, row = 1) %<>%
+    fill_panel(plot2, column = 2, row = 1) %<>%
+    fill_panel(plot3, column = 3, row = 1) 
+  figure1
+
+```
+
+|     Na figura seguinte estão representadas duas regressões lineares: a da frequência cardíaca final em função do índice de massa corporal (IMC) do indivíduo e da frequência cardíaca final em função do BPM da música. Em ambos os casos **quanto maior o valor da variável independente, mais elevada será a frequência cardíaca**.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="50%"}
+
+  bmidata <- c(dataset$BMI)
+  finalBPM <- c(dataset$fbpm)
+  
+  plot4 <- ggplot(dataset, aes(x = bmidata, y = finalBPM)) + 
+       geom_point() +
+       stat_smooth(method = "lm", col = "red")+
+       geom_vline(xintercept = 25, color="blue")+
+       ggtitle("BPM em função do \n Índice de massa corporal") +
+       theme(plot.title = element_text(hjust = 0.5))+
+       xlab("Índice de massa corporal")+
+       ylab("BPM")+ 
+       annotate("text", x=25.3, y=79, label= "Acima do peso", angle = 90)+
+       geom_vline(xintercept = 30, color="blue")+
+       annotate("text", x=30.3, y=81, label= "Obeso", angle = 90)
+  
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="50%"}
+
+  sbpmdata <- c(dataset$sbpm)
+  finalBPM <- c(dataset$fbpm)
+  
+  plot5 <-  ggplot(dataset, aes(x = sbpmdata, y = finalBPM)) + 
+       geom_point() +
+       stat_smooth(method = "lm", col = "red")+
+       ggtitle("BPM em função do \n BPM da música") +
+       theme(plot.title = element_text(hjust = 0.5))+
+       xlab("BPM da música")+
+       ylab("BPM")
+  
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="50%"}
+  
+  # FIGURA AUXILIAR PARA COLOCAR OS GRÁFICOS LADO A LADO
+  
+  theme_set(theme_bw())
+
+  figure2 <- multi_panel_figure(columns = 2, rows = 1, panel_label_type = "none", height=95)
+  
+  figure2 %<>%
+    fill_panel(plot4, column = 1, row = 1) %<>%
+    fill_panel(plot5, column = 2, row = 1) 
+  figure2
+
+```
+
+|     Tendo em conta todos os fatores em simultâneo, vemos com base no gráfico de barras seguinte que a maioria dos participantes **teve um acréscimo de 3 a 6 batimentos** por minuto após ouvir uma determinada música.$^{Anexo2}$
+
+# Discussion (5/20)
+
+*Add any relevant insights and discussion topics here*
+
+|     Neste trabalho, uma amostra corresponde à audição de um estilo musical por um indivíduo, ou seja, o mesmo indivíduo foi exposto aos 7 géneros musicais, desta forma, como as observações dentro de uma mesma pessoa não são naturalmente independentes seria necessário estudar efeitos aleatórios e modelos mistos que não estão no âmbito do trabalho, no entanto estes dados são válidos para o pretendido.
+
+|     O BPM de uma música pode efetivamente estar relacionado com a frequência cardíaca, ainda assim, como a música é muito subjetiva e composta por diversos fatores correlacionados, é difícil afirmar que um fator aumenta mais a frequência cardíaca que outro, uma vez que não os conseguimos isolar e estudar independentemente.
+|     Com os resultados deste trabalho, a frequência cardíaca após audição musical parece depender mais da velocidade da música do que do género musical ou dos outros fatores. Ao analisar os dados podemos perceber que é nos os géneros **Hardstyle** e **Heavy Metal**, que os participantes apresentam uma frequência cardíaca final mais elevada. Estes correspondem às músicas com o BPM mais elevado (150 e 190 correspondentemente), seguem-se o Jazz (122), o Pop (120), a Clássica (116), a Valsa (95) e, por fim o Reggae (72), contudo, como já discutido anteriormente não podemos tirar conclusões para a população geral a partir desta amostra.
+|     Não contemplámos neste estudo a preferência musical dos indivíduos, mas tal como os fatores analisados, também este pode ter um efeito nos batimentos cardíacos.
+
+## Answering the question (1/20)
+
+*Describe if your data contained relevant information to answer the initial question, what were your conclusions and discuss the results given other references on the topic.*
+
+|     Este estudo permitiu perceber que os vários fatores analisados alteram a frequência cardíaca dos indivíduos após a audição musical, sendo os fatores mais significativos o BPM da música escolhida e o índice de massa corporal, uma vez que ambos aumentam a frequência cardíaca, quanto maior for o seu valor.
+
+## If repeating the work (2/20)
+
+*Describe if you repeated the work, what would you do differently? Did new questions arise? What other questions might you try to answer?*
+
+* Idealmente tentar-se-ia escolher uma amostra de indivíduos verdadeiramente aleatória, no entanto, como isso seria difícil, o mais correto neste caso seria utilizar técnicas de amostragem probabilística em conjunto com esta amostra para obter dados mais representativos da realidade e com um *“bias”* menor.
+* Para obter resultados mais fidedignos em relação ao número de batimentos cardíacos, os dados deveriam ser recolhidos através de um eletrocardiograma (ECG), ou ao utilizar o mesmo método de recolha (smartwatch e oxímetro), fazê-lo apenas com um dos dispositivos, de forma a minimizar o erros de medição.
+* O mesmo caso se aplica aos aparelhos utilizados para reprodução e audição da música. Todos os dados deveriam ser recolhidos com recurso aos mesmos aparelhos, para minimizar outros fatores que poderiam influenciar a frequência cardíaca.
+* O local de recolha de dados deveria ser o mesmo, para que todos os participantes estivessem sujeitos às mesmas condições.
+
+
+## Key learning (1/20)
+
+*What was the key thing you learned from conducting this data collection experiment*
+
+|     Aprendemos que ouvir música é um fenómeno complexo e que envolve vários fatores e que esta, associada às características físicas de um indivíduo e aos seus hábitos, pode provocar alterações na sua frequência cardíaca. 
+|     Com este trabalho percebemos ainda quais as dificuldades associadas ao planeamento de um estudo estatístico e como pode ser difícil escolher uma amostra representativa do que queremos estudar.
+
+
+# References (1/20)
+
+*Add here any cited references*
+
+* [1] *Physical Medicine & Rehabilitation, Chang Gung Memorial Hospital, Taipei.* (2013). Cgmh.org.tw. https://www1.cgmh.org.tw/intr/intr2/c3390/en/music-therapy.htm
+* [2] *Tuning in: How music may affect your heart - Harvard Health.* (2018, June). Harvard Health; Harvard Health. https://www.health.harvard.edu/heart-health/tuning-in-how-music-may-affect-your-heart
+* [3] Vitaterna, M. H., Takahashi, J. S., & Turek, F. W. (2001). Overview of circadian rhythms. *Alcohol Research & Health : The Journal of the National Institute on Alcohol Abuse and Alcoholism, 25*(2), 85–93. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6707128/
+* [4] Chen, L., & Yang, G. (2015). Recent advances in circadian rhythms in cardiovascular system. *Frontiers in Pharmacology, 6*. https://doi.org/10.3389/fphar.2015.00071
+* [5]  Papathanasiou, G., Georgakopoulos, D., Papageorgiou, E., Michalis, L., & Kalfakakou, V. (2013). Effects of Smoking on Heart Rate at Rest and During Exercise, and on Heart Rate Recovery, in Young Adults. * Hellenic Journal of Cardiology) Hellenic J Cardiol, 54*, 168–177. https://www.hellenicjcardiol.org/archive/full_text/2013/3/2013_3_168.pdf
+
+
+# Supplementary material
+
+*While you can add below anything you would like as Supplementary material, this component will not be graded. You are assessed by the material above, with each component's weight being visible in front of each header*
+
+### Anexo 1:
+Resumo dos dados obtidos:
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+  
+  # REALIZAÇÃO DE UM SUMÁRIO DOS DADOS IMPORTADOS ###################
+  summary(dataset)
+
+```
+
+### Anexo 2
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center', out.width="80%"}
+
+  diferenca <- (dataset$fbpm - dataset$ibpm)
+
+  ggplot(dataset, aes(x=diferenca )) +
+      geom_bar(color="black", fill="#56B4E9" )+
+      ggtitle("Alteração da frequência cardíaca \n (todos os fatores)") +
+      theme(plot.title = element_text(hjust = 0.5))+
+      xlab("Diferença entre BPM final e inicial")+
+      ylab("Quantidade de amostras n=70") 
+  
+```
+
+### Anexo 3:
+
+Músicas utilizadas:
+
+* **Música clássica**: Mozart - Turkish March
+* **Hardstyle**: Headhunterz & Sub Zero Project - Our Church
+* **Heavy metal**: Amon Amarth - War of the Gods
+* **Jazz**: Ella Fitzgerald, Louis Armstrong - Cheek to Cheek
+* **Pop**: Carly Rae Jepsen - Call Me Maybe
+* **Reggae**: Bob Marley - Rat race
+* **Valsa**: Moon River - Andy Williams
