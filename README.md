@@ -11,3 +11,5 @@ Para o fazer era necessário ter:
 Este repositório inclui um ficheiro R onde os dados foram analisados e onde foi desenvolvido o relatório, um ficheiro PDF (o relatório), um ficheiro de metadados que explica os dados recolhidos e um ficheiro excel com os dados.
 
 O trabalho foi feito em grupo
+
+Nota final: 19/20
